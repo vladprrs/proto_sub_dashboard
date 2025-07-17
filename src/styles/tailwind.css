@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+@layer components {
+  .status-bar {
+    @apply h-5 bg-white/80 backdrop-blur-[20px] z-status-bar;
+  }
+  
+  .map-background {
+    @apply absolute top-0 left-0 w-mobile h-screen z-map object-cover;
+  }
+  
+  .bottom-sheet {
+    @apply bg-background rounded-t-4xl z-bottom-sheet;
+    height: 60vh;
+  }
+  
+  .bottom-sheet-dragger {
+    @apply w-10 h-1 bg-foreground/20 rounded-full mx-auto mt-2;
+  }
+  
+  .nav-panel {
+    @apply sticky top-0 z-nav-panel px-4 pb-4;
+  }
+  
+  .bottom-nav {
+    @apply fixed bottom-0 w-mobile h-[82px] bg-background/80 z-bottom-nav;
+  }
+  
+  /* Скрытие скроллбара */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+} 
