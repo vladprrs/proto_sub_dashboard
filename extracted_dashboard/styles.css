@@ -1,0 +1,262 @@
+/* === Контейнеры === */
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+.flex-start {
+  align-items: flex-start;
+}
+.flex-end {
+  align-items: flex-end;
+}
+.flex-1 {
+  flex: 1 0 0;
+}
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+
+.stretch { align-self: stretch; }
+.relative { position: relative; }
+.absolute { position: absolute; }
+
+/* === Размеры и отступы === */
+.w-320 { width: 320px; }
+.h-1364 { height: 1364px; }
+.h-812 { height: 812px; }
+.h-40 { height: 40px; }
+.h-116 { height: 116px; }
+.h-120 { height: 120px; }
+.h-48 { height: 48px; }
+.h-24 { height: 24px; }
+.h-20 { height: 20px; }
+.h-90 { height: 90px; }
+.p-0-16 { padding: 0 16px; }
+.p-10-8 { padding: 10px 8px; }
+.p-12 { padding: 12px; }
+.p-16 { padding: 16px; }
+.p-4 { padding: 4px; }
+.p-8 { padding: 8px; }
+
+/* === Цвета и фоны === */
+.bg-white { background: #FFF; }
+.bg-f1 { background: #F1F1F1; }
+.bg-green { background: #1BA136; }
+.bg-gray { background: #898989; }
+.bg-light { background: rgba(20, 20, 20, 0.06); }
+.bg-blur { background: rgba(255,255,255,0.70); backdrop-filter: blur(20px); }
+
+/* === Текстовые стили === */
+.text-h4 {
+  color: #141414;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: -0.38px;
+}
+.text-body {
+  color: #141414;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.24px;
+}
+.text-body-secondary {
+  color: #898989;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: -0.28px;
+}
+.text-caption {
+  color: #B8B8B8;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: 14px;
+  letter-spacing: -0.176px;
+}
+.text-caption-2 {
+  color: #898989;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  letter-spacing: -0.234px;
+}
+.text-btn {
+  color: #FFF;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+.text-btn-secondary {
+  color: #141414;
+  font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.3px;
+  text-align: center;
+}
+.text-btn-traffic-heavy { color: #F5373C; }
+.text-btn-traffic-average { color: #EFA701; }
+.text-btn-traffic-light { color: #1BA136; }
+
+/* === Кнопки === */
+.btn-primary {
+  background: #1DB93C;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  gap: 8px;
+}
+.btn-secondary {
+  background: rgba(20, 20, 20, 0.06);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 8px;
+  gap: 8px;
+}
+.btn-icon {
+  background: rgba(20, 20, 20, 0.06);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+/* === Иконки === */
+.icon-24 {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-32 {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-round {
+  border-radius: 50%;
+  border: 0.5px solid rgba(137, 137, 137, 0.40);
+  background: #FFF;
+}
+
+/* === Бордеры и радиусы === */
+.rounded-6 { border-radius: 6px; }
+.rounded-8 { border-radius: 8px; }
+.rounded-12 { border-radius: 12px; }
+.rounded-16 { border-radius: 16px; }
+.rounded-24 { border-radius: 24px; }
+.rounded-32 { border-radius: 32px; }
+.rounded-100 { border-radius: 100px; }
+.border { border: 1px solid #B8B8B8; }
+.border-green { border: 2px solid #1BA136; }
+.border-gray { border: 0.5px solid rgba(137, 137, 137, 0.40); }
+
+/* === Карточки и контейнеры === */
+.card {
+  background: #FFF;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+}
+.card-bordered {
+  border: 2px solid #1BA136;
+  border-radius: 16px;
+}
+.card-secondary {
+  border: 0.5px solid rgba(137, 137, 137, 0.40);
+  border-radius: 12px;
+  background: rgba(20, 20, 20, 0.06);
+}
+
+/* === Прочее === */
+.shadow {
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05), 0px 0px 1px 0px rgba(0, 0, 0, 0.07);
+}
+.shadow-inset {
+  box-shadow: 0px -0.5px 0px 0px rgba(137, 137, 137, 0.30) inset;
+}
+.overflow-hidden { overflow: hidden; }
+.ellipsis { text-overflow: ellipsis; white-space: nowrap; }
+
+/* === Для иконок и svg === */
+.icon-24 { width: 24px; height: 24px; }
+.icon-32 { width: 32px; height: 32px; }
+.icon-48 { width: 48px; height: 48px; }
+.icon-96 { width: 96px; height: 96px; }
+
+/* === Пример для иконок с цветом === */
+.icon-green { fill: #1BA136; }
+.icon-gray { fill: #898989; }
+.icon-black { fill: #141414; }
+.icon-yellow { fill: #EFA701; }
+.icon-red { fill: #F5373C; }
+
+/* === Отступы и размеры (utility) === */
+.p-0-16 { padding: 0 16px; }
+.p-10-8 { padding: 10px 8px; }
+.p-10-14 { padding: 10px 14px; }
+.p-10-16-10-12 { padding: 10px 16px 10px 12px; }
+.p-12-0-12-16 { padding: 12px 0px 12px 16px; }
+.p-14-0-4-0 { padding: 14px 0px 4px 0px; }
+.p-16-0 { padding: 16px 0px; }
+.p-16-16-60-16 { padding: 16px 16px 60px 16px; }
+.p-7-0-1-0 { padding: 7px 0px 1px 0px; }
+.pb-12 { padding-bottom: 12px; }
+.pb-4 { padding-bottom: 4px; }
+.pb-6 { padding-bottom: 6px; }
+.pb-13 { padding-bottom: 13px; }
+.pt-11 { padding-top: 11px; }
+.pt-16 { padding-top: 16px; }
+.gap-6 { gap: 6px; }
+.gap-8 { gap: 8px; }
+.gap-10 { gap: 10px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+
+/* === Выравнивание === */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+.align-center { align-items: center; }
+.align-start { align-items: flex-start; }
+.align-end { align-items: flex-end; }
+.justify-center { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end { justify-content: flex-end; }
+
+/* === Цвета для utility-классов === */
+.text-primary { color: #141414; }
+.text-secondary { color: #898989; }
+.text-accent { color: #1BA136; }
+.text-danger { color: #F5373C; }
+.text-warning { color: #EFA701; }
+.text-success { color: #1BA136; }
+.text-white { color: #FFF; } 

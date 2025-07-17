@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=320, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+<style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'SB Sans Text', -apple-system, Roboto, Helvetica, sans-serif;
+      background: #F1F1F1;
+      overflow: hidden;
+    }
+    
+    /* MapScreenLayout */
+    .map-screen-layout {
+      width: 320px;
+      height: 100vh;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .map-background {
+      width: 320px;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+      z-index: 0;
+    }
+    
+    /* Status Bar */
+    .status-bar {
+      width: 100%;
+      height: 20px;
+      backdrop-filter: blur(20px);
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 7px;
+      z-index: 100;
+    }
+    
+    .time-display {
+      color: #000;
+      font-family: 'SF Pro Text', -apple-system, Roboto, Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      margin-left: 135px;
+    }
+    
+    /* Map Controls (только поверх карты) */
+    .map-controls {
+      position: absolute;
+      top: 24px;
+      right: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 10;
+    }
+    
+    .map-control-button {
+      width: 48px;
+      height: 48px;
+      background: rgba(255,255,255,0.8);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    /* Bottom Sheet */
+    .bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #F1F1F1;
+      border-radius: 16px 16px 0 0;
+      z-index: 1000;
+      min-height: 60vh;
+      transform: translateY(0);
+      transition: none;
+      box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+      /* Нижний край всегда привязан к низу экрана */
+      height: 60vh;
+    }
+    
+    /* Контейнер для скролла внутри шторки */
+    .bottom-sheet-content {
+      padding-bottom: 20px;
+      scroll-behavior: smooth;
+      overflow-y: auto;
+      max-height: calc(100vh - 82px);
+      padding-bottom: 102px; /* Отступ для нижней навигации */
+      padding-top: 0; /* Отступ сверху не нужен, sticky nav-bar сам создаст пространство */
+    }
+    
+
+    
+    .dragger {
+      width: 40px;
+      height: 4px;
+      background: rgba(20, 20, 20, 0.09);
+      border-radius: 6px;
+      margin: 16px auto 0 auto;
+    }
+    
+    /* Nav Bar (на шторке) */
+    .nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      padding: 0 16px 16px 16px;
+      gap: 12px;
+      background: #F1F1F1;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      border-radius: 16px 16px 0 0;
+      margin-bottom: 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .search-field {
+      flex: 1;
+      height: 40px;
+      padding: 10px 8px;
+      background: rgba(20, 20, 20, 0.06);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #898989;
+      font-size: 14px;
+    }
+    
+    .salut-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background-image: url('images/0235e2ec7b64e89803c2ebe320dbddf014cebf7a.jpg');
+      background-size: cover;
+      flex-shrink: 0;
+    }
+    
+    .icon-button {
+      width: 40px;
+      height: 40px;
+      background: rgba(20, 20, 20, 0.06);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    /* Избранные маршруты */
+    .favorite-routes {
+      padding: 0 16px 16px 16px;
+      background: #F1F1F1;
+      position: relative;
+      z-index: 1001;
+      margin-top: 0; /* Отступ сверху не нужен, так как nav-bar sticky */
+    }
+    
+
+    
+    .routes-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #141414;
+      margin-bottom: 12px;
+    }
+    
+    .routes-buttons {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    
+    .route-button {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      background: rgba(20, 20, 20, 0.06);
+      border-radius: 8px;
+      white-space: nowrap;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    
+    .route-button-icon {
+      font-size: 16px;
+    }
+    
+    .route-button-time {
+      font-size: 14px;
+      font-weight: 500;
+      color: #F5373C;
+    }
+    
+    .route-button-time.average {
+      color: #EFA701;
+    }
+    
+    /* Transport Section (на шторке) */
+    .transport-section {
+      display: flex;
+      padding: 16px 0px 0px 0px;
+      flex-direction: column;
+      align-items: flex-start;
+      align-self: stretch;
+      height: 40px;
+      overflow: hidden;
+      background: #F1F1F1;
+    }
+    
+    .fade-mask {
+      display: flex;
+      width: 320px;
+      height: 40px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-shrink: 0;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0.8) 100%);
+    }
+    
+    .transport-buttons {
+      display: flex;
+      width: 586px;
+      align-items: center;
+      gap: 8px;
+      position: absolute;
+      left: 16px;
+      top: 0px;
+      height: 40px;
+    }
+    
+    .transport-button {
+      display: flex;
+      padding: 10px 14px;
+      align-items: center;
+      gap: 8px;
+      border-radius: 8px;
+      background: rgba(20, 20, 20, 0.06);
+      white-space: nowrap;
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    .traffic-time {
+      color: #F5373C;
+      font-size: 14px;
+      font-weight: 500;
+      text-align: center;
+    }
+    
+    .traffic-time.average {
+      color: #EFA701;
+    }
+    
+    /* Stories Section (на шторке) */
+    .stories-section {
+      padding: 0 16px;
+      background: #F1F1F1;
+    }
+    
+    .stories-row {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+    }
+    
+    .story-card {
+      flex-shrink: 0;
+      width: 96px;
+      height: 120px;
+      border: 2px solid #1BA136;
+      border-radius: 16px;
+      padding: 4px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .story-image {
+      width: 96px;
+      height: 112px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+    
+    .story-text {
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      right: 8px;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.8);
+      line-height: 1.2;
+    }
+    
+    /* Content Section */
+    .content-section {
+      display: flex;
+      padding: 16px 16px 0px 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
+      align-self: stretch;
+      background: #F1F1F1;
+    }
+    
+    .section-title {
+      font-size: 19px;
+      font-weight: 600;
+      line-height: 24px;
+      letter-spacing: -0.38px;
+      color: #141414;
+      padding-bottom: 12px;
+    }
+    
+    /* Cards Grid */
+    .cards-grid {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      align-self: stretch;
+    }
+    
+    .left-column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1 0 0;
+    }
+    
+    .right-column {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 12px;
+      flex: 1 0 0;
+    }
+    
+    /* Cards */
+    .interesting-card {
+      display: flex;
+      height: 244px;
+      align-items: flex-start;
+      gap: 10px;
+      align-self: stretch;
+      border-radius: 12px;
+      background: white;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    
+    .card-text-section {
+      display: flex;
+      padding: 0px 16px;
+      flex-direction: column;
+      align-items: flex-start;
+      align-self: stretch;
+    }
+    
+    .card-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.24px;
+      color: #141414;
+      padding: 10px 0px 2px 0px;
+    }
+    
+    .card-subtitle {
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 18px;
+      letter-spacing: -0.28px;
+      color: #898989;
+      padding-bottom: 12px;
+    }
+    
+    .card-image {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: flex-end;
+      flex: 1 0 0;
+      align-self: stretch;
+      background-size: cover;
+      background-position: center;
+    }
+    
+    /* Meta Cards */
+    .meta-card {
+      display: flex;
+      height: 116px;
+      justify-content: center;
+      align-items: center;
+      align-self: stretch;
+      border-radius: 12px;
+      background: white;
+      position: relative;
+      cursor: pointer;
+    }
+    
+    .meta-card-content {
+      display: flex;
+      padding: 0px 16px 12px 16px;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex: 1 0 0;
+      align-self: stretch;
+      border-radius: 12px;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100%;
+      height: 116px;
+    }
+    
+    .meta-card-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 20px;
+      letter-spacing: -0.24px;
+      color: #141414;
+      padding: 10px 0px 2px 0px;
+    }
+    
+    .meta-card-icon {
+      display: flex;
+      height: 1px;
+      justify-content: flex-end;
+      align-items: flex-end;
+      align-self: stretch;
+    }
+    
+    .icon-place {
+      display: flex;
+      padding: 8px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 24px;
+      background: rgba(20, 20, 20, 0.06);
+      font-size: 32px;
+    }
+    
+    /* Bottom Spacing */
+    .bottom-spacing {
+      height: 60px;
+      background: #F1F1F1;
+    }
+    
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 320px;
+      height: 82px;
+      background: rgba(241,241,241,0.8);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(0,0,0,0.1);
+      z-index: 1002;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding-top: 34px;
+    }
+    
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      color: #898989;
+      font-size: 11px;
+    }
+    
+    .nav-item.active {
+      color: #1BA136;
+    }
+    
+    .nav-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+  }
+</style>
+</head>
+<body>
+<div class="map-screen-layout">
+  <!-- Карта как фон -->
+  <img class="map-background" src="images/1787ae2a5cea9bf92b50b8f4cc908087feab9732.jpg" alt="Карта" />
+  
+  <!-- Статус бар -->
+  <div class="status-bar">
+    <div style="font-size: 12px; color: #000;">LTE</div>
+    <div class="time-display">09:41</div>
+    <div style="font-size: 12px; color: #000;">100%</div>
+  </div>
+
+  <!-- Управление картой (только поверх карты) -->
+  <div class="map-controls">
+    <div class="map-control-button">📊</div>
+    <div class="map-control-button" style="background: rgba(255,255,255,0.9);">
+      <div style="width: 28px; height: 28px; border: 2px solid #1BA136; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600;">2</div>
+    </div>
+    <div class="map-control-button">📍</div>
+  </div>
+
+  <!-- Bottom Sheet -->
+  <div class="bottom-sheet">
+    <div class="dragger"></div>
+    
+    <div class="bottom-sheet-content">
+      <!-- Навигационная панель (на шторке) -->
+      <div class="nav-bar">
+        <div class="search-field">
+          <span>🔍</span>
+          <span>Поиск в Москве</span>
+        </div>
+        <div class="salut-icon"></div>
+        <div class="icon-button">☰</div>
+      </div>
+
+      <!-- Избранные маршруты -->
+      <div class="favorite-routes">
+        <div class="routes-buttons">
+          <div class="route-button">
+            <span class="route-button-icon">🔖</span>
+          </div>
+          <div class="route-button">
+            <span class="route-button-icon">🏠</span>
+            <span class="route-button-time">2 ч 45 мин</span>
+          </div>
+          <div class="route-button">
+            <span class="route-button-icon">💼</span>
+            <span class="route-button-time average">45 мин</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Story карточки (на шторке) -->
+      <div class="stories-section">
+        <div class="stories-row">
+          <div class="story-card">
+            <img class="story-image" src="images/34f67ee241b18699fd7e3f7d00e2b36780572204.jpg" alt="Story 1" />
+            <div class="story-text">Заголовок сторис три строки</div>
+          </div>
+          <div class="story-card">
+            <img class="story-image" src="images/e42877ade1f2bd4cfde7c0b41fad26ebdad2f46e.jpg" alt="Story 2" />
+            <div class="story-text">Заголовок сторис три строки</div>
+          </div>
+          <div class="story-card">
+            <img class="story-image" src="images/3a11f310b9b132d5ce81bd19443d7d5fa0f543f7.jpg" alt="Story 3" />
+            <div class="story-text">Заголовок сторис три строки</div>
+          </div>
+          <div class="story-card">
+            <img class="story-image" src="images/40ceba486b7ff03fe9915708b46fafaa10915184.jpg" alt="Story 4" />
+            <div class="story-text">Заголовок сторис три строки</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="content-section">
+        <div class="section-title">Советы к месту</div>
+        
+        <div class="cards-grid">
+          <div class="left-column">
+            <!-- Интересное в городе -->
+            <div class="interesting-card">
+              <div class="card-text-section">
+                <div class="card-title">Интересное в городе</div>
+                <div class="card-subtitle">37 подборок</div>
+              </div>
+              <div class="card-image" style="background-image: url('images/15fcb5df22f040135b4b4a6c11ee1f9feba9623b.jpg');"></div>
+            </div>
+
+            <!-- Поесть -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Поесть</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">🍽️</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Банкоматы -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Банкоматы</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">💳</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Катки -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Катки</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">⛸️</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="right-column">
+            <!-- Xiaomi -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Xiaomi</div>
+                <div class="card-subtitle">Реклама</div>
+                <div style="position: absolute; bottom: 12px; right: 16px; width: 48px; height: 48px; background: #FF6700; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">MI</div>
+              </div>
+            </div>
+
+            <!-- Катки (дубликат) -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Катки</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">⛸️</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Салоны красоты -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Салоны красоты</div>
+                <div class="card-subtitle">5671 место</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">💄</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Пожить -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Пожить</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">🏨</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Все рубрики -->
+            <div class="meta-card">
+              <div class="meta-card-content">
+                <div class="meta-card-title">Все рубрики</div>
+                <div class="meta-card-icon">
+                  <div class="icon-place">⋯</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottom-spacing"></div>
+    </div>
+  </div>
+
+  <!-- Нижняя навигация -->
+  <div class="bottom-nav">
+    <div class="nav-item active">
+      <div class="nav-icon">📊</div>
+      <span>Обзор</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">🗺️</div>
+      <span>Маршруты</span>
+    </div>
+    <div class="nav-item">
+      <div class="nav-icon">👤</div>
+      <span>Профиль</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Обработка скролла для нижней панели
+  const bottomSheet = document.querySelector('.bottom-sheet');
+  const bottomSheetContent = document.querySelector('.bottom-sheet-content');
+  let lastScrollTop = 0;
+  let currentTranslateY = 0;
+  let isFullyExpanded = false;
+  let isScrolling = false;
+  let scrollTimeout;
+  let isSheetCollapsing = false; // Флаг для отслеживания процесса сворачивания шторки
+
+
+  // Функция для принудительной блокировки скролла
+  function blockScroll() {
+    bottomSheetContent.scrollTop = 0;
+  }
+
+  // Обработка скролла внутри шторки
+  bottomSheetContent.addEventListener('scroll', (e) => {
+    const scrollTop = e.target.scrollTop;
+    const scrollDelta = scrollTop - lastScrollTop;
+    
+    // Если шторка полностью развернута и скролл вниз, начинаем сворачивать шторку
+    if (isFullyExpanded && scrollDelta < 0) {
+      isSheetCollapsing = true;
+      isFullyExpanded = false;
+      
+      // Принудительно блокируем скролл контента
+      blockScroll();
+      
+      const currentHeight = 60 + Math.abs(currentTranslateY);
+      const newHeight = Math.max(currentHeight + scrollDelta / 4, 60);
+      currentTranslateY = -(newHeight - 60);
+      bottomSheet.style.height = `${newHeight}vh`;
+      
+      if (newHeight <= 60) {
+        isSheetCollapsing = false;
+        currentTranslateY = 0;
+        bottomSheet.style.height = '60vh';
+      }
+      
+      lastScrollTop = 0;
+      return;
+    }
+    
+    // Если шторка сворачивается, полностью блокируем скролл
+    if (isSheetCollapsing) {
+      blockScroll();
+      return;
+    }
+    
+    // Если шторка полностью развернута и скролл вверх, разрешаем скролл контента
+    if (isFullyExpanded && scrollTop > 0) {
+      lastScrollTop = scrollTop;
+      return;
+    }
+    
+    // Throttling для более плавной работы
+    if (scrollTimeout) {
+      clearTimeout(scrollTimeout);
+    }
+    
+    scrollTimeout = setTimeout(() => {
+      if (scrollDelta > 0) {
+        // Скролл вверх - увеличиваем высоту шторки
+        if (!isFullyExpanded && !isSheetCollapsing) {
+          const currentHeight = 60 + Math.abs(currentTranslateY);
+          const newHeight = Math.min(currentHeight + scrollDelta / 4, 100);
+          currentTranslateY = -(newHeight - 60);
+          bottomSheet.style.height = `${newHeight}vh`;
+          
+          if (newHeight >= 100) {
+            isFullyExpanded = true;
+            // Когда шторка полностью развернута, разрешаем скролл контента
+            lastScrollTop = scrollTop;
+            return;
+          }
+          
+          // Блокируем скролл во время разворачивания, но позволяем управлять высотой
+          bottomSheetContent.scrollTop = 0;
+        }
+      }
+      
+      lastScrollTop = scrollTop;
+    }, 16); // ~60fps
+  });
+
+  // Обработка клика по dragger для переключения состояния
+  document.querySelector('.dragger').addEventListener('click', () => {
+    if (isFullyExpanded) {
+      currentTranslateY = 0;
+      isFullyExpanded = false;
+      isSheetCollapsing = false;
+      bottomSheet.style.height = '60vh';
+      bottomSheetContent.scrollTop = 0;
+    } else {
+      currentTranslateY = -40;
+      isFullyExpanded = true;
+      isSheetCollapsing = false;
+      bottomSheet.style.height = '100vh';
+    }
+  });
+</script>
+</body>
+</html>
