@@ -16,24 +16,41 @@ const LoadingSpinner: React.FC = () => (
   </div>
 )
 
-// Обертка для ленивой загрузки
-const withSuspense = (Component: React.ComponentType) => (
-  <Suspense fallback={<LoadingSpinner />}>
-    <Component />
-  </Suspense>
-)
-
 const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={withSuspense(Dashboard)} />
-      <Route path="/subscription" element={withSuspense(SubscriptionMgmt)} />
+      <Route path="/" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <Dashboard />
+        </Suspense>
+      } />
+      <Route path="/subscription" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <SubscriptionMgmt />
+        </Suspense>
+      } />
       
       {/* Маршруты подписки */}
-      <Route path="/subscribe" element={withSuspense(SubscribeEntry)} />
-      <Route path="/subscribe/value" element={withSuspense(ValueProp)} />
-      <Route path="/subscribe/modules" element={withSuspense(ModuleSelect)} />
-      <Route path="/subscribe/confirm" element={withSuspense(Confirm)} />
+      <Route path="/subscribe" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <SubscribeEntry />
+        </Suspense>
+      } />
+      <Route path="/subscribe/value" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <ValueProp />
+        </Suspense>
+      } />
+      <Route path="/subscribe/modules" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <ModuleSelect />
+        </Suspense>
+      } />
+      <Route path="/subscribe/confirm" element={
+        <Suspense fallback={<LoadingSpinner />}>
+          <Confirm />
+        </Suspense>
+      } />
     </Routes>
   )
 }

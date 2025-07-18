@@ -2,31 +2,6 @@ import React from 'react'
 import * as TabsPrimitive from '@radix-ui/react-tabs'
 import { cn } from '../lib/utils'
 
-interface TabsProps {
-  defaultValue: string
-  value?: string
-  onValueChange?: (value: string) => void
-  children: React.ReactNode
-  className?: string
-}
-
-interface TabsListProps {
-  children: React.ReactNode
-  className?: string
-}
-
-interface TabsTriggerProps {
-  value: string
-  children: React.ReactNode
-  className?: string
-}
-
-interface TabsContentProps {
-  value: string
-  children: React.ReactNode
-  className?: string
-}
-
 const Tabs = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Root>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Root>
