@@ -5,7 +5,7 @@ import AppRoutes from './routes'
 const App: React.FC = () => {
   return (
     <SubscriptionProvider>
-      <div className="w-mobile h-screen mx-auto bg-background">
+      <div className="w-full max-w-[586px] h-screen mx-auto bg-background">
         <AppRoutes />
       </div>
     </SubscriptionProvider>

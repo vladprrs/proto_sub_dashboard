@@ -40,8 +40,8 @@ export default {
       height: {
         'screen': '100vh',
       },
-      width: {
-        'mobile': '320px',
+      maxWidth: {
+        container: '586px',
       },
       zIndex: {
         'status-bar': '100',
