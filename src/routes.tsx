@@ -1,6 +1,5 @@
 import React, { lazy, Suspense } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import SubscribeLayout from './layouts/SubscribeLayout'
 
 // Ленивая загрузка страниц
 const Dashboard = lazy(() => import('./pages/Dashboard'))
@@ -28,15 +27,13 @@ const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={withSuspense(Dashboard)} />
-      <Route path="/subscribe" element={withSuspense(SubscribeEntry)} />
       <Route path="/subscription" element={withSuspense(SubscriptionMgmt)} />
       
-      {/* Маршруты с лейаутом подписки */}
-      <Route path="/subscribe" element={<SubscribeLayout />}>
-        <Route path="value" element={withSuspense(ValueProp)} />
-        <Route path="modules" element={withSuspense(ModuleSelect)} />
-        <Route path="confirm" element={withSuspense(Confirm)} />
-      </Route>
+      {/* Маршруты подписки */}
+      <Route path="/subscribe" element={withSuspense(SubscribeEntry)} />
+      <Route path="/subscribe/value" element={withSuspense(ValueProp)} />
+      <Route path="/subscribe/modules" element={withSuspense(ModuleSelect)} />
+      <Route path="/subscribe/confirm" element={withSuspense(Confirm)} />
     </Routes>
   )
 }

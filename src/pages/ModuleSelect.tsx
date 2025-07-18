@@ -8,10 +8,7 @@ const ModuleSelect: React.FC = () => {
   const { state, toggleModule } = useSubscription()
 
   const handleNext = () => {
-    const hasSelectedModules = state.subscription.selectedModules.some(module => module.enabled)
-    if (hasSelectedModules) {
-      navigate('/subscribe/confirm')
-    }
+    navigate('/subscribe/confirm')
   }
 
   const totalPrice = state.subscription.selectedModules
@@ -22,10 +19,10 @@ const ModuleSelect: React.FC = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-section-title font-bold text-foreground mb-2">
-          Выберите модули
+          Выберите нужные модули
         </h1>
         <p className="text-body text-foreground-secondary">
-          Подключите нужные вам возможности
+          Можно менять в любой момент. Оплата — только за подключённое.
         </p>
       </div>
 
@@ -68,20 +65,10 @@ const ModuleSelect: React.FC = () => {
         ))}
       </div>
 
-      {totalPrice > 0 && (
-        <div className="bg-primary/10 rounded-xl p-4">
-          <div className="flex justify-between items-center">
-            <span className="text-body font-medium text-foreground">Итого в месяц:</span>
-            <span className="text-card-title font-bold text-primary">{totalPrice} ₽</span>
-          </div>
-        </div>
-      )}
-
       <div className="pt-4">
         <button
           onClick={handleNext}
-          disabled={totalPrice === 0}
-          className="w-full bg-primary text-white py-4 px-6 rounded-xl font-medium hover:bg-primary/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="w-full bg-primary text-white py-4 px-6 rounded-xl font-medium hover:bg-primary/90 transition-colors"
         >
           Далее
         </button>

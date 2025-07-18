@@ -41,9 +41,13 @@ const SubscriptionMgmt: React.FC = () => {
                 </p>
               </div>
               <div className="text-right">
-                <p className="text-body text-foreground-secondary">Баланс баллов</p>
-                <p className="text-card-title font-bold text-primary">{state.subscription.balance}</p>
+                <p className="text-body text-foreground-secondary">Баланс кешбэка</p>
+                <p className="text-card-title font-bold text-primary">{state.subscription.balance} ₽</p>
               </div>
+            </div>
+            
+            <div className="text-body text-foreground-secondary">
+              Следующее списание: 15 августа 2025
             </div>
             
             {state.subscription.status === 'active' && (
@@ -83,7 +87,7 @@ const SubscriptionMgmt: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="text-card-title font-bold text-foreground">{module.name}</h3>
-                      <p className="text-body text-foreground-secondary">{module.description}</p>
+                      <p className="text-body text-foreground-secondary">{module.price} ₽/мес</p>
                     </div>
                   </div>
                   

@@ -17,6 +17,7 @@ interface DashboardContentProps {
     icon?: string
     type: 'large' | 'meta' | 'ad'
     adIcon?: string
+    onClick?: () => void
   }>
 }
 
@@ -24,21 +25,23 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ stories, cards }) =
   return (
     <>
       {/* Навигационная панель */}
-      <div className="sticky top-0 z-nav-panel px-4 pb-4 bg-background">
-        <div className="flex items-center gap-3">
-          <div className="flex-1 h-10 bg-foreground/6 rounded-lg flex items-center gap-2 px-3 text-foreground-secondary">
-            <Search className="w-4 h-4" />
-            <span className="text-sm">Поиск в Москве</span>
-          </div>
-          <div className="w-10 h-10 bg-foreground/6 rounded-lg flex items-center justify-center">
-            <img 
-              src="/extracted_dashboard/images/0235e2ec7b64e89803c2ebe320dbddf014cebf7a.jpg" 
-              alt="Avatar" 
-              className="w-6 h-6 rounded"
-            />
-          </div>
-          <div className="w-10 h-10 bg-foreground/6 rounded-lg flex items-center justify-center">
-            <Menu className="w-5 h-5 text-foreground" />
+      <div className="sticky top-0 z-nav-panel bg-white shadow-lg rounded-t-2xl mb-4">
+        <div className="px-4 pb-4 pt-4">
+          <div className="flex items-center gap-3">
+            <div className="flex-1 h-10 bg-gray-100 rounded-lg flex items-center gap-2 px-3 text-gray-500">
+              <Search className="w-4 h-4" />
+              <span className="text-sm">Поиск в Москве</span>
+            </div>
+            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+              <img 
+                src="/extracted_dashboard/images/0235e2ec7b64e89803c2ebe320dbddf014cebf7a.jpg" 
+                alt="Avatar" 
+                className="w-6 h-6 rounded"
+              />
+            </div>
+            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+              <Menu className="w-5 h-5 text-gray-700" />
+            </div>
           </div>
         </div>
       </div>
@@ -85,7 +88,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ stories, cards }) =
             {/* Большая карточка */}
             <ContentCard
               {...cards[0]}
-              onClick={() => console.log('Large card clicked')}
+              onClick={cards[0].onClick || (() => console.log('Large card clicked'))}
             />
 
             {/* Мета карточки */}
@@ -93,7 +96,7 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ stories, cards }) =
               <ContentCard
                 key={card.id}
                 {...card}
-                onClick={() => console.log('Card clicked:', card.id)}
+                onClick={card.onClick || (() => console.log('Card clicked:', card.id))}
               />
             ))}
           </div>
@@ -104,64 +107,14 @@ const DashboardContent: React.FC<DashboardContentProps> = ({ stories, cards }) =
               <ContentCard
                 key={card.id}
                 {...card}
-                onClick={() => console.log('Card clicked:', card.id)}
+                onClick={card.onClick || (() => console.log('Card clicked:', card.id))}
               />
             ))}
           </div>
         </div>
       </div>
 
-      {/* Дополнительные секции для тестирования прокрутки */}
-      <div className="px-4 mt-6">
-        <h2 className="text-section-title font-bold text-foreground mb-4">Популярные места</h2>
-        
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-3">
-            {cards.slice(0, 3).map((card) => (
-              <ContentCard
-                key={`popular-${card.id}`}
-                {...card}
-                onClick={() => console.log('Popular card clicked:', card.id)}
-              />
-            ))}
-          </div>
-          <div className="space-y-3">
-            {cards.slice(3, 6).map((card) => (
-              <ContentCard
-                key={`popular-${card.id}`}
-                {...card}
-                onClick={() => console.log('Popular card clicked:', card.id)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="px-4 mt-6">
-        <h2 className="text-section-title font-bold text-foreground mb-4">Новые места</h2>
-        
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-3">
-            {cards.slice(1, 4).map((card) => (
-              <ContentCard
-                key={`new-${card.id}`}
-                {...card}
-                onClick={() => console.log('New card clicked:', card.id)}
-              />
-            ))}
-          </div>
-          <div className="space-y-3">
-            {cards.slice(4, 7).map((card) => (
-              <ContentCard
-                key={`new-${card.id}`}
-                {...card}
-                onClick={() => console.log('New card clicked:', card.id)}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
-
+  
       {/* Отступ для нижней навигации */}
       <div className="h-20" />
     </>

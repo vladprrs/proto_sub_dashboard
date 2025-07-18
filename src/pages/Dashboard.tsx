@@ -1,7 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MapPin, BarChart3 } from 'lucide-react'
-import SubscriptionCard from '../components/SubscriptionCard'
 import BottomSheet from '../components/BottomSheet'
 import DashboardContent from '../components/DashboardContent'
 import BottomNavigation from '../components/BottomNavigation'
@@ -19,7 +18,14 @@ const Dashboard: React.FC = () => {
 
   // Данные для карточек
   const cards = [
-    { id: 1, title: 'Интересное в городе', subtitle: '37 подборок', image: '/extracted_dashboard/images/15fcb5df22f040135b4b4a6c11ee1f9feba9623b.jpg', type: 'large' as const },
+    { 
+      id: 1, 
+      title: 'Новая подписка 2ГИС', 
+      subtitle: 'Получите доступ к расширенным возможностям 2GIS', 
+      image: '/extracted_dashboard/images/image_002.png', 
+      type: 'large' as const,
+      onClick: () => navigate('/subscribe')
+    },
     { id: 2, title: 'Поесть', icon: '🍽️', type: 'meta' as const },
     { id: 3, title: 'Банкоматы', icon: '💳', type: 'meta' as const },
     { id: 4, title: 'Катки', icon: '⛸️', type: 'meta' as const },
@@ -61,9 +67,6 @@ const Dashboard: React.FC = () => {
           <MapPin className="w-6 h-6 text-foreground" />
         </div>
       </div>
-
-      {/* Карточка подписки */}
-      <SubscriptionCard />
 
       {/* Bottom Sheet */}
       <BottomSheet>

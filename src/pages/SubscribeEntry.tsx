@@ -1,102 +1,153 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/Tabs'
 import Card from '../components/Card'
+import FixedSubscribeButton from '../components/FixedSubscribeButton'
 import { useSubscription } from '../context/SubscriptionContext'
 
 const SubscribeEntry: React.FC = () => {
-  const navigate = useNavigate()
   const { state } = useSubscription()
-  const [activeTab, setActiveTab] = useState('value')
+  const [selectedModules, setSelectedModules] = useState<string[]>([])
 
-  const handleSubscribe = () => {
-    navigate('/subscribe/value')
+  const toggleModule = (moduleId: string) => {
+    setSelectedModules(prev => 
+      prev.includes(moduleId) 
+        ? prev.filter(id => id !== moduleId)
+        : [...prev, moduleId]
+    )
   }
+
+  // Данные модулей из TEXTS.MD
+  const modules = [
+    {
+      id: 'navigation-pro',
+      name: 'Навигация Pro',
+      description: 'Езжайте быстрее и тише: без рекламы, оптимальный маршрут, Eco‑Route',
+      price: 'от 79'
+    },
+    {
+      id: 'social-plus',
+      name: 'Social +',
+      description: 'Друзья на карте — на ваших условиях: Ghost‑режим, реакции, уникальные хвосты',
+      price: 'от 49'
+    },
+    {
+      id: 'offline-plus',
+      name: 'Offline +',
+      description: 'Работает даже без интернета: Smart Download, ночные обновления карт',
+      price: 'от 59'
+    }
+  ]
 
   return (
     <div className="min-h-screen bg-background">
       <Header title="Оформить подписку" />
       
-      <main className="px-4 pb-20">
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <div className="nav-panel">
-            <TabsList className="w-full">
-              <TabsTrigger value="value" className="flex-1">Выгода</TabsTrigger>
-              <TabsTrigger value="modules" className="flex-1">Модули</TabsTrigger>
-            </TabsList>
-          </div>
-          
-          <TabsContent value="value" className="mt-6">
+      <main className="px-4 pb-32">
+        {/* Секция выгоды */}
+        <section className="mb-12">
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-section-title font-bold text-foreground mb-3">
+                Экономьте на каждой поездке
+              </h2>
+              <p className="text-body text-foreground-secondary mb-6">
+                Получайте кешбэк 1 ₽ за каждый литр бензина и дополнительные скидки в дороге.
+              </p>
+            </div>
+            
             <div className="space-y-4">
               <Card>
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <span className="text-primary font-bold">💰</span>
                   </div>
                   <div>
-                    <h3 className="text-card-title font-bold text-foreground">Кешбэк до 10%</h3>
-                    <p className="text-body text-foreground-secondary">Возвращаем деньги за покупки</p>
+                    <h3 className="text-card-title font-bold text-foreground">Кешбэк 1 ₽/л — автоматически в чеке</h3>
                   </div>
                 </div>
               </Card>
               
               <Card>
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
                     <span className="text-primary font-bold">🎫</span>
                   </div>
                   <div>
-                    <h3 className="text-card-title font-bold text-foreground">Эксклюзивные купоны</h3>
-                    <p className="text-body text-foreground-secondary">Скидки только для подписчиков</p>
+                    <h3 className="text-card-title font-bold text-foreground">Купоны партнёров — ещё до 5 % выгоды</h3>
                   </div>
                 </div>
               </Card>
               
               <Card>
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-primary font-bold">📱</span>
+                    <span className="text-primary font-bold">🚀</span>
                   </div>
                   <div>
-                    <h3 className="text-card-title font-bold text-foreground">Офлайн карты</h3>
-                    <p className="text-body text-foreground-secondary">Работает без интернета</p>
+                    <h3 className="text-card-title font-bold text-foreground">Ранний доступ к новым функциям</h3>
                   </div>
                 </div>
               </Card>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="modules" className="mt-6">
-            <div className="space-y-4">
-              {state.subscription.selectedModules.map((module) => (
-                <Card key={module.id}>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h3 className="text-card-title font-bold text-foreground">{module.name}</h3>
-                      <p className="text-body text-foreground-secondary">{module.description}</p>
-                      <p className="text-body font-medium text-primary">{module.price} ₽/мес</p>
-                    </div>
-                    <div className="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center">
-                      <span className="text-primary text-xs">+</span>
-                    </div>
-                  </div>
-                </Card>
-              ))}
+          </div>
+        </section>
+
+        {/* Секция модулей */}
+        <section>
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-section-title font-bold text-foreground mb-3">
+                Соберите подписку под себя
+              </h2>
+              <p className="text-body text-foreground-secondary mb-6">
+                Подписка — это база + модули. Выбирайте только нужные функции.
+              </p>
             </div>
-          </TabsContent>
-        </Tabs>
-        
-        {/* Кнопка оформления */}
-        <div className="mt-8">
-          <button
-            onClick={handleSubscribe}
-            className="w-full bg-primary text-white py-4 px-6 rounded-xl font-medium hover:bg-primary/90 transition-colors"
-          >
-            Оформить
-          </button>
-        </div>
+            
+            <div className="space-y-4">
+              {modules.map((module) => {
+                const isSelected = selectedModules.includes(module.id)
+                return (
+                  <Card 
+                    key={module.id} 
+                    className={`cursor-pointer transition-all duration-200 ${
+                      isSelected ? 'ring-2 ring-primary bg-primary/5' : 'hover:bg-gray-50'
+                    }`}
+                    onClick={() => toggleModule(module.id)}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex-1">
+                        <h3 className="text-card-title font-bold text-foreground mb-2">{module.name}</h3>
+                        <p className="text-body text-foreground-secondary mb-2">{module.description}</p>
+                        <p className="text-body font-medium text-primary">{module.price} ₽/мес</p>
+                      </div>
+                      <div className={`w-6 h-6 rounded-full flex items-center justify-center transition-all duration-200 ${
+                        isSelected 
+                          ? 'bg-primary text-white' 
+                          : 'bg-primary/10 text-primary'
+                      }`}>
+                        <span className="text-xs font-bold">
+                          {isSelected ? '✓' : '+'}
+                        </span>
+                      </div>
+                    </div>
+                  </Card>
+                )
+              })}
+            </div>
+            
+            <div className="text-center text-body text-foreground-secondary mt-4">
+              Базовый тариф 149 ₽/мес. Модули оплачиваются отдельно.
+            </div>
+          </div>
+        </section>
       </main>
+
+      {/* Фиксированная кнопка подписки */}
+      <FixedSubscribeButton 
+        selectedModules={selectedModules}
+        modules={modules}
+      />
     </div>
   )
 }

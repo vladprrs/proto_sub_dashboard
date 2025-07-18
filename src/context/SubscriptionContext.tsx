@@ -38,23 +38,23 @@ const initialState: SubscriptionState = {
     selectedModules: [
       {
         id: 'navigation-pro',
-        name: 'Navigation Pro',
-        description: 'Расширенная навигация',
-        price: 299,
+        name: 'Навигация Pro',
+        description: 'Езжайте быстрее и тише: без рекламы, оптимальный маршрут, Eco‑Route',
+        price: 79,
         enabled: false
       },
       {
         id: 'social-plus',
         name: 'Social +',
-        description: 'Социальные функции',
-        price: 199,
+        description: 'Друзья на карте — на ваших условиях: Ghost‑режим, реакции, уникальные хвосты',
+        price: 49,
         enabled: false
       },
       {
         id: 'offline-plus',
         name: 'Offline +',
-        description: 'Офлайн режим',
-        price: 399,
+        description: 'Работает даже без интернета: Smart Download, ночные обновления карт',
+        price: 59,
         enabled: false
       }
     ]
