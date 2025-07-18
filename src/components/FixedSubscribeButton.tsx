@@ -28,7 +28,7 @@ const FixedSubscribeButton: React.FC<FixedSubscribeButtonProps> = ({
   const totalPrice = basePrice + modulesPrice
 
   return (
-    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-4 max-w-[320px] mx-auto ${className}`}>
+    <div className={`fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 px-4 py-4 max-w-[586px] mx-auto ${className}`}>
       <div className="flex items-center justify-between mb-3">
         <div className="text-sm text-foreground-secondary">
           {selectedModules.length > 0 ? `${selectedModules.length} модуль${selectedModules.length === 1 ? '' : selectedModules.length < 5 ? 'а' : 'ей'} выбрано` : 'Базовый тариф'}

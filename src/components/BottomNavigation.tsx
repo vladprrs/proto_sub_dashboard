@@ -11,7 +11,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({
   onItemClick 
 }) => {
   return (
-    <div className="fixed bottom-0 left-0 w-mobile h-[82px] bg-background/80 backdrop-blur-[20px] border-t border-gray-200 z-bottom-nav">
+    <div className="fixed bottom-0 left-0 w-full max-w-[586px] mx-auto h-[82px] bg-background/80 backdrop-blur-[20px] border-t border-gray-200 z-bottom-nav">
       <div className="flex items-center justify-around h-full pt-8">
         <button
           onClick={() => onItemClick?.('overview')}

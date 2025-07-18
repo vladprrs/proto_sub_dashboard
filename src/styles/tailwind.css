@@ -20,7 +20,7 @@
   }
   
   .map-background {
-    @apply absolute top-0 left-0 w-mobile h-screen z-map object-cover;
+    @apply absolute top-0 left-0 w-full max-w-[586px] h-screen z-map object-cover mx-auto;
   }
   
   .bottom-sheet {
@@ -37,7 +37,7 @@
   }
   
   .bottom-nav {
-    @apply fixed bottom-0 w-mobile h-[82px] bg-background/80 z-bottom-nav;
+    @apply fixed bottom-0 w-full max-w-[586px] bg-background/80 h-[82px] z-bottom-nav mx-auto;
   }
   
   /* Скрытие скроллбара */

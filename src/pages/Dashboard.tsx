@@ -36,7 +36,7 @@ const Dashboard: React.FC = () => {
   ]
 
   return (
-    <div className="relative w-mobile h-screen overflow-hidden">
+    <div className="relative w-full max-w-[586px] h-screen mx-auto overflow-hidden">
       {/* Статус бар */}
       <div className="absolute top-0 left-0 right-0 h-5 bg-white/80 backdrop-blur-[20px] z-status-bar flex items-center justify-between px-2 text-xs font-semibold">
         <span>LTE</span>
